@@ -6,8 +6,6 @@ public class ContainerController : MonoBehaviour
 {
 
 
-    [SerializeField] MeshCollider mesh;
-    [SerializeField] LiquidContainer container;
     void Start()
     {
         
@@ -22,6 +20,6 @@ public class ContainerController : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         Debug.Log("test");
-        container.AddLiquid();
+       // container.AddLiquid();
     }
 }
