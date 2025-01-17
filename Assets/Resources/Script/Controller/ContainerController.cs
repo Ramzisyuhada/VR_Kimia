@@ -6,6 +6,9 @@ public class ContainerController : MonoBehaviour
 {
 
 
+    [SerializeField] Collider LiquidColider;
+    [SerializeField] PourController pourcontroller;
+
     void Start()
     {
         
@@ -17,9 +20,5 @@ public class ContainerController : MonoBehaviour
         
     }
 
-    protected virtual void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("test");
-       // container.AddLiquid();
-    }
+   
 }
