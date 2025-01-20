@@ -151,7 +151,7 @@ namespace XRAccelerator.Gameplay
         {
             // offset from range [0, height] to [-height/2, height/2] if the origin is in the center
             var offsetHeight = availableLocalHeight * (isMeshOriginOnCenter ? 0.5f : 0);
-
+            Debug.Log(offsetHeight);
             return currentLiquidHeight
                  - offsetHeight
                  - extraLocalHeight; // remove the extra height that can't hold liquid when rotated
@@ -187,7 +187,7 @@ namespace XRAccelerator.Gameplay
 
         private void UpdateShaderFillAmount()
         {
-            float shaderFill = currentLiquidHeight <= 0 ? -500 : GetLiquidLocalHeight();
+            float shaderFill = currentLiquidHeight <= 0 ? 0.12f : GetLiquidLocalHeight();
             _renderer.material.SetFloat(FillAmountShaderName, shaderFill);
         }
 
@@ -390,7 +390,6 @@ namespace XRAccelerator.Gameplay
             basePoints = new List<Transform>();
             CreatePoints(basePoints, minPoint.y, "BasePoints");
 
-            // Wobble Variables
             pulse = 2 * Mathf.PI * WobbleSpeed;
         }
 
