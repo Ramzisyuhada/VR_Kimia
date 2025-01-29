@@ -12,9 +12,11 @@ namespace XRAccelerator.Gameplay
         private static readonly int FillAmountShaderName = Shader.PropertyToID("_FillAmount");
         private static readonly int LiquidColorShaderName = Shader.PropertyToID("_LiquidColor");
 
-        public Action<float> Spilled;
+        [HideInInspector] public bool spill;
 
         [Header("Container")]
+        public Action<float> Spilled;
+
         [SerializeField]
         [Tooltip("How many milliliters this container can hold")]
         private int containerVolume = 200;
@@ -43,6 +45,7 @@ namespace XRAccelerator.Gameplay
         [Tooltip("[Optional] If a non ingredient mesh should be updated as submerged.\nThe submergedShader must be applied manually to the desired materials")]
         private MeshRenderer defaultSubmergedMesh;
 
+        [SerializeField] private bool IsContainer;
         // Container Variables
         private const int pourPointsAmount = 10;
         private List<Transform> pourPoints;
@@ -151,7 +154,6 @@ namespace XRAccelerator.Gameplay
         {
             // offset from range [0, height] to [-height/2, height/2] if the origin is in the center
             var offsetHeight = availableLocalHeight * (isMeshOriginOnCenter ? 0.5f : 0);
-            Debug.Log(offsetHeight);
             return currentLiquidHeight
                  - offsetHeight
                  - extraLocalHeight; // remove the extra height that can't hold liquid when rotated
@@ -165,7 +167,7 @@ namespace XRAccelerator.Gameplay
             }
 
             var previousHeight = currentLiquidHeight;
-            currentLiquidHeight = Mathf.Max(0,currentLiquidHeight - volumeHeightSpilled);
+            if(IsContainer)currentLiquidHeight = Mathf.Max(0,currentLiquidHeight - volumeHeightSpilled);
             var volumeSpilled = (1 - (currentLiquidHeight / previousHeight)) * currentLiquidVolume;
             currentLiquidVolume -= volumeSpilled;
 
@@ -180,14 +182,20 @@ namespace XRAccelerator.Gameplay
             containerVolumePerHeight = containerVolume / (Mathf.Abs(availableLocalHeight) + extraLocalHeight);
 
             if (currentLiquidHeight > availableLocalHeight)
-            {
+            { 
+                spill = true;
                 Spill(currentLiquidHeight - availableLocalHeight);
+            }else
+            {
+
+                spill = false;
             }
+            
         }
 
         private void UpdateShaderFillAmount()
         {
-            float shaderFill = currentLiquidHeight <= 0 ? 0.12f : GetLiquidLocalHeight();
+            float shaderFill = currentLiquidHeight <= 0 ? -500f : GetLiquidLocalHeight();
             _renderer.material.SetFloat(FillAmountShaderName, shaderFill);
         }
 
@@ -232,10 +240,10 @@ namespace XRAccelerator.Gameplay
 
         private void Update()
         {
+            //currentLiquidHeight = 0.12f;
             lowestPourPoint = GetLowestPoint(pourPoints);
             highestPourPoint = GetHighestPoint(pourPoints);
             lowestBasePoint = GetLowestPoint(basePoints);
-
             Wobble();
 
             TrySpill();
@@ -395,6 +403,7 @@ namespace XRAccelerator.Gameplay
 
         private void Start()
         {
+           if(!IsContainer) currentLiquidHeight = 0.12f;
             _renderer = GetComponent<Renderer>();
             _transform = transform;
 

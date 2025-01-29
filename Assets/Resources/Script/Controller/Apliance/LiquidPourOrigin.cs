@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using XRAccelerator.Configs;
 using XRAccelerator.Services;
 
@@ -12,14 +13,14 @@ namespace XRAccelerator.Gameplay
         [Tooltip("The container from where the liquid will pour")]
         private float liquidVolumePerParticle = 20;
 
-        private List<IngredientAmount> pouringIngredients;
+        [HideInInspector]  public List<IngredientAmount> pouringIngredients;
         private float currentLiquidVolume;
         private float particlesRemovedFromCollision;
 
         private int particlesRemainingToSpawn;
         private bool isPouringActive;
 
-        private ParticleSystem _particleSystem;
+        public ParticleSystem _particleSystem;
         private ParticleSystem.EmissionModule emission;
         private ParticleSystem.MinMaxCurve emissionPerTime;
 
@@ -30,9 +31,10 @@ namespace XRAccelerator.Gameplay
 
         private LiquidContainer trackedLiquidContainer;
         private Transform _transform;
-
+        List<IngredientAmount> addedIngredients;
         public void AddIngredientsToPour(List<IngredientAmount> newIngredientsToPour)
         {
+            addedIngredients = newIngredientsToPour;
             IngredientAmount.AddToIngredientsList(pouringIngredients, newIngredientsToPour);
             var addedLiquidVolume = IngredientAmount.TotalListAmount(newIngredientsToPour);
             currentLiquidVolume += addedLiquidVolume;
@@ -124,10 +126,11 @@ namespace XRAccelerator.Gameplay
                     aliveParticles.Remove(key);
                 }
             }
-
+            
             if (aliveParticles.Count == 0 && !isPouringActive)
             {
                 _particleSystem.Stop();
+
             }
 
             return newlyRemoved;
@@ -147,7 +150,7 @@ namespace XRAccelerator.Gameplay
             return -1;
         }
 
-        private void TrackContainer()
+        public void TrackContainer()
         {
             if (trackedLiquidContainer == null)
             {
@@ -198,7 +201,6 @@ namespace XRAccelerator.Gameplay
         {
             int numEnter = _particleSystem.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, triggerEnterParticles);
             var containerCollisions = new Dictionary<ContainerController, int>();
-
             // Get containers that were hit
             for (int i = 0; i < numEnter; i++)
             {
@@ -216,10 +218,20 @@ namespace XRAccelerator.Gameplay
 
                 containerCollisions[container] =
                     containerCollisions.ContainsKey(container) ? containerCollisions[container] + 1 : 1;
+
+                Debug.Log(sphereCastColliders[0].transform.gameObject.name);
+
+                if (sphereCastColliders[0].transform.GetComponentInParent<Breaker>() != null)
+                {
+                    Breaker breaker = sphereCastColliders[0].transform.GetComponentInParent<Breaker>();
+                    breaker.OnIngredientsEnter(addedIngredients);
+                    // Breaker breaker = sphereCastColliders[0].transform.gameObject.GetComponentInChildren<Breaker>();
+                    breaker.IsParticleTrigger = true;
+                }
             }
 
             _particleSystem.SetTriggerParticles(ParticleSystemTriggerEventType.Enter, triggerEnterParticles);
-
+            
             // Add ingredients to hit containers
             foreach (var entry in containerCollisions)
             {
@@ -242,7 +254,7 @@ namespace XRAccelerator.Gameplay
             emissionPerTime = emission.rateOverTime;
 
             EndPour();
-            _particleSystem.Play();
+            _particleSystem.Stop();
 
             particles = new ParticleSystem.Particle[_particleSystem.main.maxParticles];
             aliveParticles = new HashSet<uint>();

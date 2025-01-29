@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using XRAccelerator.Configs;
 
@@ -15,6 +16,7 @@ namespace XRAccelerator.Gameplay
         {
             foreach (var addedIngredient in ingredientsToAdd)
             {
+                
                 var oldIngredient = ingredients.Find(ingredientEntry =>
                     ingredientEntry.Ingredient == addedIngredient.Ingredient);
 

@@ -16,7 +16,7 @@ namespace XRAccelerator.Gameplay
         protected LiquidContainer liquidContainer;
         [SerializeField]
         [Tooltip("LiquidPourOrigin component reference, responsible for the liquid pouring visuals")]
-        private LiquidPourOrigin liquidPourOrigin;
+        protected LiquidPourOrigin liquidPourOrigin;
         [SerializeField]
         [Tooltip("The collider that detects liquid collision and adds it to the container.\nMust be a trigger collider and on Container layer")]
         private Collider liquidCollider;
@@ -41,7 +41,6 @@ namespace XRAccelerator.Gameplay
             currentLiquidVolume += newlyAddedVolume;
 
             OnIngredientsEnter(addedIngredients);
-
             var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
             liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
         }
@@ -74,6 +73,7 @@ namespace XRAccelerator.Gameplay
 
         private void CreateLiquidIngredient(LiquidIngredientConfig config, float amount)
         {
+            Debug.Log(amount);
             AddLiquidIngredient(new List<IngredientAmount>
             {
                 new IngredientAmount {Ingredient = config, Amount = amount}
@@ -120,10 +120,10 @@ namespace XRAccelerator.Gameplay
             CurrentIngredients.Clear();
         }
 
-        protected virtual void OnIngredientsEnter(List<IngredientAmount> addedIngredients)
+        public virtual void OnIngredientsEnter(List<IngredientAmount> addedIngredients)
         {
+            
             // TODO Arthur: Change container weight
-
             AddIngredients(addedIngredients);
             SetCurrentRecipe();
         }
@@ -153,7 +153,7 @@ namespace XRAccelerator.Gameplay
             }
         }
 
-        private void Spill(float volumeSpilled)
+        public void Spill(float volumeSpilled)
         {
             List<IngredientAmount> spilledIngredients =
                 LiquidIngredientConfig.GetLiquidIngredientsForVolume(CurrentIngredients, volumeSpilled, currentLiquidVolume);
@@ -253,6 +253,10 @@ namespace XRAccelerator.Gameplay
             liquidPourOrigin.TrackContainer(liquidContainer);
         }
 
+        private void Update()
+        {
+          //  ForceIngredientsStayInContainer();
+        }
         protected override void Awake()
         {
             base.Awake();

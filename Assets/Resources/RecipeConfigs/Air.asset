@@ -12,6 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a24ad3b4b164a049892dcf665313dc3, type: 3}
   m_Name: Air
   m_EditorClassIdentifier: 
-  SourceIngredients: []
+  SourceIngredients:
+  - IngredientTypes: 
+    Ingredients:
+    - {fileID: 11400000, guid: 9acc75fb963082745b2f50c6572a6c28, type: 2}
+    MinAmount: 0.1
+    MaxAmount: 10000
+  - IngredientTypes: 
+    Ingredients:
+    - {fileID: 11400000, guid: a80a7df343cd25045919c79475b2ab1b, type: 2}
+    MinAmount: 0.1
+    MaxAmount: 10000
   ApplianceType: 0
-  OutputIngredient: {fileID: 0}
+  OutputIngredient: {fileID: 11400000, guid: b56a614f1bd384348aef4e7bfb9a8d1c, type: 2}

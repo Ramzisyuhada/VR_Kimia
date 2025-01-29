@@ -23,8 +23,7 @@ Material:
   m_Name: Liquid
   m_Shader: {fileID: -6465566751694194690, guid: 1b51f5fd983ee464cb85a3112386a543,
     type: 3}
-  m_Parent: {fileID: -876546973899608171, guid: 1b51f5fd983ee464cb85a3112386a543,
-    type: 3}
+  m_Parent: {fileID: 2100000, guid: 2cd37a1018b411e438b250910e5e09f6, type: 2}
   m_ModifiedSerializedProperties: 2
   m_ValidKeywords: []
   m_InvalidKeywords:
