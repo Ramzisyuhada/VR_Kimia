@@ -26,6 +26,7 @@ namespace CookingSim.Scripts.Gameplay.Appliances
                 new IngredientAmount {Ingredient = liquidIngredientConfig, Amount = 1000000000}
             });
 
+
         }
         void Start()
         {
@@ -39,7 +40,6 @@ namespace CookingSim.Scripts.Gameplay.Appliances
         {
             if (liquidContainer.spill)
             {
-
                 EnableApliance();
 
             }

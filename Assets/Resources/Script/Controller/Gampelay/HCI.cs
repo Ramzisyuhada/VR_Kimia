@@ -19,7 +19,6 @@ namespace CookingSim.Scripts.Gameplay.Appliances
         private LiquidContainer liquidContainer;
         private void EnableApliance()
         {
-            //.pouringIngredients.Add(new IngredientAmount { Ingredient = liquidIngredientConfig, Amount = 1000000000 });
             liquidPourOrigin.AddIngredientsToPour(new List<IngredientAmount>
             {
                 new IngredientAmount {Ingredient = liquidIngredientConfig, Amount = 1000000000}

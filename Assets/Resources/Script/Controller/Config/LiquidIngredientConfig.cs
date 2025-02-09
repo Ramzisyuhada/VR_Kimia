@@ -46,6 +46,7 @@ namespace XRAccelerator.Configs
                 
                 if (ingredientAmount.Ingredient is LiquidIngredientConfig)
                 {
+                   // Debug.Log("Hello world");
                     if (ingredientAmount.Amount > maxVolume)
                     {
                         maxVolume = ingredientAmount.Amount;

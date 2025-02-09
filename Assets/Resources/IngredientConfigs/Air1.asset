@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e87ca8a04ce0942b8a92cdcf37f7e0, type: 3}
   m_Name: Air1
   m_EditorClassIdentifier: 
-  IngredientTypes: 
+  IngredientTypes: c9000000
   IngredientPrefab: {fileID: 0}
   liquidInsideContainerMaterial: {fileID: 2100000, guid: ed1d64851913a5b4fbe07271592693f1,
     type: 2}

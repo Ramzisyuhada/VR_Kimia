@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Air
   m_EditorClassIdentifier: 
   SourceIngredients:
-  - IngredientTypes: 
-    Ingredients:
-    - {fileID: 11400000, guid: 9acc75fb963082745b2f50c6572a6c28, type: 2}
-    MinAmount: 0.1
-    MaxAmount: 10000
-  - IngredientTypes: 
+  - IngredientTypes: c9000000
     Ingredients:
     - {fileID: 11400000, guid: a80a7df343cd25045919c79475b2ab1b, type: 2}
+    MinAmount: 0.1
+    MaxAmount: 10000
+  - IngredientTypes: c9000000
+    Ingredients:
+    - {fileID: 11400000, guid: 9acc75fb963082745b2f50c6572a6c28, type: 2}
     MinAmount: 0.1
     MaxAmount: 10000
   ApplianceType: 0

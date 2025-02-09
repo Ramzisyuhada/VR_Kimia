@@ -31,22 +31,32 @@ namespace XRAccelerator.Gameplay
         protected readonly List<IngredientGraphics> CurrentIngredientGraphics = new List<IngredientGraphics>();
         protected RecipeConfig CurrentRecipeConfig;
 
-        protected float currentLiquidVolume;
-        private bool isBeingGrabbed;
+        [HideInInspector]public float currentLiquidVolume;
+        [HideInInspector] public bool Isfull;
+        private  bool isBeingGrabbed;
 
-
-        public void AddLiquidIngredient(List<IngredientAmount> addedIngredients)
+        public void AddLiquidIngredient(List<IngredientAmount> addedIngredients ,Material material = null)
         {
             var newlyAddedVolume = IngredientAmount.TotalListAmount(addedIngredients);
             currentLiquidVolume += newlyAddedVolume;
-
             OnIngredientsEnter(addedIngredients);
             var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
-            liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
-        }
 
+            
+            liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
+            
+       
+         }
+
+
+
+        protected virtual void ExecuteRecipeZat()
+        {
+            if (CurrentIngredients.Count <= 1) return;
+        }
         protected virtual void ExecuteRecipe()
         {
+            if(CurrentIngredients.Count <= 1) return;
             var currentAmount = IngredientAmount.TotalListAmount(CurrentIngredients);
             if (currentAmount == 0)
             {
@@ -65,19 +75,18 @@ namespace XRAccelerator.Gameplay
             {
                 CreateLiquidIngredient((LiquidIngredientConfig)newIngredientConfig, amount);
             }
-            else
+/*            else
             {
                 CreateIngredientGraphics(newIngredientConfig.IngredientPrefab, amount);
-            }
+            }*/
         }
 
-        private void CreateLiquidIngredient(LiquidIngredientConfig config, float amount)
+        public void CreateLiquidIngredient(LiquidIngredientConfig config, float amount)
         {
-            Debug.Log(amount);
             AddLiquidIngredient(new List<IngredientAmount>
             {
                 new IngredientAmount {Ingredient = config, Amount = amount}
-            });
+            }, config.liquidInsideContainerMaterial);
         }
 
         private void CreateIngredientGraphics(IngredientGraphics prefab, float amount)
@@ -113,8 +122,8 @@ namespace XRAccelerator.Gameplay
             }
 
             // Empty container
-            currentLiquidVolume = 0;
-            liquidContainer.Empty();
+            //  currentLiquidVolume = 0;
+            //liquidContainer.Empty();
 
             CurrentIngredientGraphics.Clear();
             CurrentIngredients.Clear();
@@ -122,11 +131,11 @@ namespace XRAccelerator.Gameplay
 
         public virtual void OnIngredientsEnter(List<IngredientAmount> addedIngredients)
         {
-            
-            // TODO Arthur: Change container weight
             AddIngredients(addedIngredients);
             SetCurrentRecipe();
         }
+
+
 
         protected virtual void OnIngredientsExit(List<IngredientAmount> removedIngredients)
         {
@@ -242,7 +251,7 @@ namespace XRAccelerator.Gameplay
             isBeingGrabbed = false;
         }
 
-        private void SetCurrentRecipe()
+        public void SetCurrentRecipe()
         {
             CurrentRecipeConfig = GetRecipeForIngredients(CurrentIngredients);
         }

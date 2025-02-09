@@ -196,6 +196,7 @@ namespace XRAccelerator.Gameplay
 
             TrackContainer();
         }
+        private Breaker breaker;
 
         private void OnParticleTrigger()
         {
@@ -223,10 +224,17 @@ namespace XRAccelerator.Gameplay
 
                 if (sphereCastColliders[0].transform.GetComponentInParent<Breaker>() != null)
                 {
-                    Breaker breaker = sphereCastColliders[0].transform.GetComponentInParent<Breaker>();
-                    breaker.OnIngredientsEnter(addedIngredients);
-                    // Breaker breaker = sphereCastColliders[0].transform.gameObject.GetComponentInChildren<Breaker>();
+
+                   if(breaker == null) breaker = sphereCastColliders[0].transform.GetComponentInParent<Breaker>();
                     breaker.IsParticleTrigger = true;
+                    breaker.SetCurrentRecipe();
+                    
+                   breaker.OnIngredientsEnter(addedIngredients);
+                    
+                  
+                 
+
+                    // Breaker breaker = sphereCastColliders[0].transform.gameObject.GetComponentInChildren<Breaker>();
                 }
             }
 

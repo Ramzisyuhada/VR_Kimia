@@ -11,11 +11,13 @@ public class Breaker : ContainerController
 
     [Tooltip("TO DETECT SUBSTANCE")]
     [HideInInspector] public bool IsParticleTrigger;
+    
     protected override void ExecuteRecipe()
     {
         base.ExecuteRecipe();
-        IsParticleTrigger = false;
+       IsParticleTrigger = false;
     }
+
 
     void Start()
     {
@@ -27,7 +29,9 @@ public class Breaker : ContainerController
     {
         if (IsParticleTrigger)
         {
-           // ExecuteRecipe();
+/*            Debug.Log(CurrentIngredients.Count);
+*/            //
+              ExecuteRecipe();
 
         }
     }
