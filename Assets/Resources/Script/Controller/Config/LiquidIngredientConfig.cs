@@ -46,7 +46,6 @@ namespace XRAccelerator.Configs
                 
                 if (ingredientAmount.Ingredient is LiquidIngredientConfig)
                 {
-                   // Debug.Log("Hello world");
                     if (ingredientAmount.Amount > maxVolume)
                     {
                         maxVolume = ingredientAmount.Amount;
@@ -57,5 +56,35 @@ namespace XRAccelerator.Configs
 
             return ingredientWithMostLiquid;
         }
+
+        public static LiquidIngredientConfig GetLiquidWithType(List<IngredientAmount> list)
+        {
+            LiquidIngredientConfig ingredientWithMostLiquid = null;
+
+            foreach (var ingredientAmount in list)
+            {
+               Debug.Log( ingredientAmount.Ingredient.IngredientTypes);
+                if (ingredientAmount.Ingredient is LiquidIngredientConfig)
+                {
+
+                    ingredientWithMostLiquid = (LiquidIngredientConfig)ingredientAmount.Ingredient;
+                }
+            }
+            return ingredientWithMostLiquid;
+        }
+
+
+        public static Material GetIngredientMaterialFromList(List<IngredientAmount> list)
+        {
+            foreach (var ingredientAmount in list)
+            {
+                if (ingredientAmount.Ingredient is LiquidIngredientConfig liquidIngredient)
+                {
+                    return liquidIngredient.liquidInsideContainerMaterial;
+                }
+            }
+            return null; // Jika tidak ada material yang ditemukan
+        }
+
     }
 }

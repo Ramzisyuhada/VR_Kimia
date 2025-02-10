@@ -14,8 +14,10 @@ public class Breaker : ContainerController
     
     protected override void ExecuteRecipe()
     {
-        base.ExecuteRecipe();
-       IsParticleTrigger = false;
+        /*base.ExecuteRecipe();*/
+        ReactionChemistry();
+
+        IsParticleTrigger = false;
     }
 
 
@@ -29,9 +31,7 @@ public class Breaker : ContainerController
     {
         if (IsParticleTrigger)
         {
-/*            Debug.Log(CurrentIngredients.Count);
-*/            //
-              ExecuteRecipe();
+            ExecuteRecipe();
 
         }
     }

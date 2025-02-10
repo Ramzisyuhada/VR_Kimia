@@ -19,7 +19,7 @@ namespace XRAccelerator.Gameplay
 
         [SerializeField]
         [Tooltip("How many milliliters this container can hold")]
-        private int containerVolume = 200;
+        public int containerVolume = 200;
         [SerializeField]
         [Tooltip("TooltipText")] 
         private bool isMeshOriginOnCenter;
@@ -94,7 +94,12 @@ namespace XRAccelerator.Gameplay
                 UpdateSubmergedMaterialColor(LiquidColor);
             }
         }
+        public void SetMaterial(Material newMaterial)
+        {
+            meshRenderer.material = newMaterial;
+            UpdateSubmergedMaterialColor(LiquidColor);
 
+        }
         public void Empty()
         {
             currentLiquidHeight = 0;

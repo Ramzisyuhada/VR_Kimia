@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Air
   m_EditorClassIdentifier: 
   SourceIngredients:
-  - IngredientTypes: c9000000
+  - IngredientTypes: c8000000
     Ingredients:
     - {fileID: 11400000, guid: a80a7df343cd25045919c79475b2ab1b, type: 2}
     MinAmount: 0.1

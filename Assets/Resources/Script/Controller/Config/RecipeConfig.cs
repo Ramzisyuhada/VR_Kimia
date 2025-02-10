@@ -61,6 +61,7 @@ namespace XRAccelerator.Configs
                 // Validate ingredient type requirement
                 else
                 {
+                    Debug.Log("Hello world");
                     var totalIngredientTypeAmount = ingredients
                         .Select(possibleIngredient =>
                             SharesIngredientType(possibleIngredient.Ingredient.IngredientTypes, sourceIngredient.IngredientTypes)

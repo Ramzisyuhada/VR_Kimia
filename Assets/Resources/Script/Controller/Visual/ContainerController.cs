@@ -35,25 +35,37 @@ namespace XRAccelerator.Gameplay
         [HideInInspector] public bool Isfull;
         private  bool isBeingGrabbed;
 
-        public void AddLiquidIngredient(List<IngredientAmount> addedIngredients ,Material material = null)
+        public void AddLiquidIngredient(List<IngredientAmount> addedIngredients )
         {
-            var newlyAddedVolume = IngredientAmount.TotalListAmount(addedIngredients);
-            currentLiquidVolume += newlyAddedVolume;
-            OnIngredientsEnter(addedIngredients);
-            var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
+            if (currentLiquidVolume <= liquidContainer.containerVolume )
+            {
+                var newlyAddedVolume = IngredientAmount.TotalListAmount(addedIngredients);
 
-            
-            liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
-            
+                currentLiquidVolume += newlyAddedVolume;
+                OnIngredientsEnter(addedIngredients);
+                var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
+
+                liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
+            }
        
-         }
-
-
-
-        protected virtual void ExecuteRecipeZat()
-        {
-            if (CurrentIngredients.Count <= 1) return;
         }
+
+        protected virtual void ReactionChemistry()
+        {
+            // IngredientConfig newIngredientConfig = GetOutputIngredientConfig();
+            SetCurrentRecipe();
+            if (CurrentRecipeConfig != null) {
+                IngredientConfig newIngredientConfig = GetOutputIngredientConfig();
+                Debug.Log(ConvertLiquidIngrident((LiquidIngredientConfig)newIngredientConfig).liquidInsideContainerMaterial.name);
+                //Debug.Log( LiquidIngredientConfig.GetIngredientMaterialFromList(newIngredientConfig).name);
+                liquidContainer.SetMaterial(ConvertLiquidIngrident((LiquidIngredientConfig)newIngredientConfig).liquidInsideContainerMaterial);
+            }
+
+            // if (newIngredientConfig != null) Debug.Log((LiquidIngredientConfig)newIngredientConfig);
+            //  LiquidIngredientConfig.GetLiquidWithType(CurrentIngredients);
+        }
+
+
         protected virtual void ExecuteRecipe()
         {
             if(CurrentIngredients.Count <= 1) return;
@@ -86,7 +98,12 @@ namespace XRAccelerator.Gameplay
             AddLiquidIngredient(new List<IngredientAmount>
             {
                 new IngredientAmount {Ingredient = config, Amount = amount}
-            }, config.liquidInsideContainerMaterial);
+            });
+        }
+
+        public LiquidIngredientConfig ConvertLiquidIngrident(LiquidIngredientConfig config)
+        {
+            return config;
         }
 
         private void CreateIngredientGraphics(IngredientGraphics prefab, float amount)
@@ -171,7 +188,7 @@ namespace XRAccelerator.Gameplay
             liquidPourOrigin.AddIngredientsToPour(spilledIngredients);
         }
 
-        private void AddIngredients(List<IngredientAmount> addedIngredients)
+        public void AddIngredients(List<IngredientAmount> addedIngredients)
         {
             IngredientAmount.AddToIngredientsList(CurrentIngredients, addedIngredients);
         }

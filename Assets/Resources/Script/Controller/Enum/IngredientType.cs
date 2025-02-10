@@ -3,7 +3,8 @@ namespace XRAccelerator.Enums
     public enum IngredientType
     {
    
-        Liquid = 200,
-        Water = 201,
+        NaoH = 200,
+        HCI = 201,
+
     }
 }

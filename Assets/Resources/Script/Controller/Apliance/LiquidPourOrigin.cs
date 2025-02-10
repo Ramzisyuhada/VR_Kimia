@@ -227,12 +227,11 @@ namespace XRAccelerator.Gameplay
 
                    if(breaker == null) breaker = sphereCastColliders[0].transform.GetComponentInParent<Breaker>();
                     breaker.IsParticleTrigger = true;
-                    breaker.SetCurrentRecipe();
-                    
-                   breaker.OnIngredientsEnter(addedIngredients);
-                    
-                  
-                 
+
+                   breaker.AddIngredients(addedIngredients);
+                   
+
+
 
                     // Breaker breaker = sphereCastColliders[0].transform.gameObject.GetComponentInChildren<Breaker>();
                 }
