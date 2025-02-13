@@ -17,7 +17,7 @@ namespace XRAccelerator.Gameplay
         [SerializeField]
         [Tooltip("LiquidPourOrigin component reference, responsible for the liquid pouring visuals")]
         protected LiquidPourOrigin liquidPourOrigin;
-        [SerializeField]
+        [SerializeField]    
         [Tooltip("The collider that detects liquid collision and adds it to the container.\nMust be a trigger collider and on Container layer")]
         private Collider liquidCollider;
         [SerializeField]
@@ -31,38 +31,45 @@ namespace XRAccelerator.Gameplay
         protected readonly List<IngredientGraphics> CurrentIngredientGraphics = new List<IngredientGraphics>();
         protected RecipeConfig CurrentRecipeConfig;
 
-        [HideInInspector]public float currentLiquidVolume;
+        [HideInInspector]public  float currentLiquidVolume;
         [HideInInspector] public bool Isfull;
         private  bool isBeingGrabbed;
-
+        LiquidIngredientConfig currentconfig;
+        private bool Succes;
         public void AddLiquidIngredient(List<IngredientAmount> addedIngredients )
         {
-            if (currentLiquidVolume <= liquidContainer.containerVolume )
-            {
-                var newlyAddedVolume = IngredientAmount.TotalListAmount(addedIngredients);
-
-                currentLiquidVolume += newlyAddedVolume;
                 OnIngredientsEnter(addedIngredients);
-                var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
 
+                if (!Succes) return;
+
+                var newlyAddedVolume = IngredientAmount.TotalListAmount(addedIngredients);
+                currentLiquidVolume += newlyAddedVolume;
+               
+               // OnIngredientsEnter(addedIngredients);
+                var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
                 liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
-            }
+
+
        
         }
 
         protected virtual void ReactionChemistry()
         {
-            // IngredientConfig newIngredientConfig = GetOutputIngredientConfig();
+            
             SetCurrentRecipe();
             if (CurrentRecipeConfig != null) {
                 IngredientConfig newIngredientConfig = GetOutputIngredientConfig();
-                Debug.Log(ConvertLiquidIngrident((LiquidIngredientConfig)newIngredientConfig).liquidInsideContainerMaterial.name);
-                //Debug.Log( LiquidIngredientConfig.GetIngredientMaterialFromList(newIngredientConfig).name);
-                liquidContainer.SetMaterial(ConvertLiquidIngrident((LiquidIngredientConfig)newIngredientConfig).liquidInsideContainerMaterial);
+
+                if (currentconfig != (LiquidIngredientConfig)newIngredientConfig)
+                {
+                    Succes = true;
+                    liquidContainer.SetMaterial(ConvertLiquidIngrident((LiquidIngredientConfig)newIngredientConfig).liquidInsideContainerMaterial);
+                    currentconfig = (LiquidIngredientConfig)newIngredientConfig;
+                }
+                    
+                
             }
 
-            // if (newIngredientConfig != null) Debug.Log((LiquidIngredientConfig)newIngredientConfig);
-            //  LiquidIngredientConfig.GetLiquidWithType(CurrentIngredients);
         }
 
 
@@ -127,7 +134,7 @@ namespace XRAccelerator.Gameplay
             return CurrentRecipeConfig.OutputIngredient;
         }
 
-        private void DestroyCurrentIngredients()
+        public void DestroyCurrentIngredients()
         {
             // Destroy solids
             foreach (var ingredientGraphics in CurrentIngredientGraphics)
@@ -139,9 +146,10 @@ namespace XRAccelerator.Gameplay
             }
 
             // Empty container
-            //  currentLiquidVolume = 0;
-            //liquidContainer.Empty();
-
+            currentLiquidVolume = 0;
+            liquidContainer.Empty();
+            currentconfig = null;
+            Succes = false;
             CurrentIngredientGraphics.Clear();
             CurrentIngredients.Clear();
         }
@@ -197,6 +205,7 @@ namespace XRAccelerator.Gameplay
         {
             foreach (var removedIngredient in removedIngredients)
             {
+
                 var oldIngredient = CurrentIngredients.Find(ingredientEntry =>
                     ingredientEntry.Ingredient == removedIngredient.Ingredient);
 

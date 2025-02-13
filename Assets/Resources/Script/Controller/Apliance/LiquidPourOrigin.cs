@@ -32,6 +32,7 @@ namespace XRAccelerator.Gameplay
         private LiquidContainer trackedLiquidContainer;
         private Transform _transform;
         List<IngredientAmount> addedIngredients;
+
         public void AddIngredientsToPour(List<IngredientAmount> newIngredientsToPour)
         {
             addedIngredients = newIngredientsToPour;
@@ -84,7 +85,6 @@ namespace XRAccelerator.Gameplay
             {
                 return;
             }
-
             foreach (var pouringIngredient in pouringIngredients.ToList())
             {
                 pouringIngredient.Amount -= pouringIngredient.Amount * liquidVolume / currentLiquidVolume;

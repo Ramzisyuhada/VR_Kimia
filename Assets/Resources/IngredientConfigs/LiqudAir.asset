@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e87ca8a04ce0942b8a92cdcf37f7e0, type: 3}
   m_Name: LiqudAir
   m_EditorClassIdentifier: 
-  IngredientTypes: c9000000
+  IngredientTypes: c8000000
   IngredientPrefab: {fileID: 0}
   liquidInsideContainerMaterial: {fileID: 2100000, guid: 2cd37a1018b411e438b250910e5e09f6,
     type: 2}

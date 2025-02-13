@@ -56,7 +56,7 @@ namespace XRAccelerator.Gameplay
         private float containerRadius;
 
         private float containerVolumePerHeight;
-        private float currentLiquidHeight;
+        [HideInInspector]public float currentLiquidHeight;
         private float currentLiquidVolume;
 
         private Transform lowestPourPoint;
@@ -93,6 +93,14 @@ namespace XRAccelerator.Gameplay
                 UpdateShaderFillAmount();
                 UpdateSubmergedMaterialColor(LiquidColor);
             }
+        }
+
+        public void VolumeLiquid(float volume)
+        {
+            currentLiquidVolume += volume;
+            currentLiquidHeight += volume / containerVolumePerHeight;
+            UpdateShaderFillAmount();
+
         }
         public void SetMaterial(Material newMaterial)
         {

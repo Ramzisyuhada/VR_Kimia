@@ -25,7 +25,7 @@ public class Breaker : ContainerController
     {
     
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -34,5 +34,10 @@ public class Breaker : ContainerController
             ExecuteRecipe();
 
         }
+
+        if (GetComponentInChildren<LiquidContainer>().currentLiquidHeight <= 0) { 
+            DestroyCurrentIngredients();
+        }
+      
     }
 }
