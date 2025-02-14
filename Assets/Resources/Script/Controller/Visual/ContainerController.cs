@@ -38,19 +38,18 @@ namespace XRAccelerator.Gameplay
         private bool Succes;
         public void AddLiquidIngredient(List<IngredientAmount> addedIngredients )
         {
-                OnIngredientsEnter(addedIngredients);
+            //Debug.Log(CurrentIngredients.Count);
+             OnIngredientsEnter(addedIngredients);
+             var newlyAddedVolume = IngredientAmount.TotalListAmount(addedIngredients);
+            currentLiquidVolume += newlyAddedVolume;
+            var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
 
-                if (!Succes) return;
+            if (CurrentRecipeConfig == null) { 
+               liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
+                return;
+            }
 
-                var newlyAddedVolume = IngredientAmount.TotalListAmount(addedIngredients);
-                currentLiquidVolume += newlyAddedVolume;
-               
-               // OnIngredientsEnter(addedIngredients);
-                var ingredientWithMostLiquid = LiquidIngredientConfig.GetLiquidWithMostVolume(CurrentIngredients);
-                liquidContainer.AddLiquid(newlyAddedVolume, ingredientWithMostLiquid.liquidInsideContainerMaterial);
-
-
-       
+            liquidContainer.VolumeLiquid(newlyAddedVolume);
         }
 
         protected virtual void ReactionChemistry()
@@ -62,8 +61,10 @@ namespace XRAccelerator.Gameplay
 
                 if (currentconfig != (LiquidIngredientConfig)newIngredientConfig)
                 {
-                    Succes = true;
+
+                   
                     liquidContainer.SetMaterial(ConvertLiquidIngrident((LiquidIngredientConfig)newIngredientConfig).liquidInsideContainerMaterial);
+                    Debug.Log(ConvertLiquidIngrident((LiquidIngredientConfig)newIngredientConfig).liquidInsideContainerMaterial.name);
                     currentconfig = (LiquidIngredientConfig)newIngredientConfig;
                 }
                     
@@ -146,6 +147,7 @@ namespace XRAccelerator.Gameplay
             }
 
             // Empty container
+            CurrentRecipeConfig = null;
             currentLiquidVolume = 0;
             liquidContainer.Empty();
             currentconfig = null;

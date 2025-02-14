@@ -37,6 +37,7 @@ public class Breaker : ContainerController
 
         if (GetComponentInChildren<LiquidContainer>().currentLiquidHeight <= 0) { 
             DestroyCurrentIngredients();
+            Debug.Log("Kosong");
         }
       
     }

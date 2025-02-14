@@ -99,6 +99,7 @@ namespace XRAccelerator.Gameplay
         {
             currentLiquidVolume += volume;
             currentLiquidHeight += volume / containerVolumePerHeight;
+            Debug.Log(meshRenderer.material.name);
             UpdateShaderFillAmount();
 
         }
